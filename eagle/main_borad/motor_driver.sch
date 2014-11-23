@@ -3991,6 +3991,9 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <part name="2" library="pinhead" deviceset="PINHD-1X6" device=""/>
 <part name="3" library="pinhead" deviceset="PINHD-1X8" device=""/>
 <part name="RESET_A" library="pinhead" deviceset="PINHD-1X2" device=""/>
+<part name="SUPPLY" library="pinhead" deviceset="PINHD-1X2" device=""/>
+<part name="GND6" library="supply1" deviceset="GND" device=""/>
+<part name="P+6" library="supply1" deviceset="VCC" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -4017,10 +4020,13 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <instance part="R1" gate="G$1" x="5.08" y="0"/>
 <instance part="C4" gate="G$1" x="3.81" y="7.62" rot="R90"/>
 <instance part="P+5" gate="VCC" x="-7.62" y="0" rot="R90"/>
-<instance part="1" gate="A" x="48.26" y="-78.74" rot="R270"/>
-<instance part="2" gate="A" x="78.74" y="-78.74" rot="R270"/>
-<instance part="3" gate="A" x="109.22" y="-78.74" rot="R270"/>
+<instance part="1" gate="A" x="58.42" y="-83.82" rot="R270"/>
+<instance part="2" gate="A" x="88.9" y="-83.82" rot="R270"/>
+<instance part="3" gate="A" x="119.38" y="-83.82" rot="R270"/>
 <instance part="RESET_A" gate="G$1" x="25.4" y="7.62" rot="R90"/>
+<instance part="SUPPLY" gate="G$1" x="20.32" y="-83.82" rot="R270"/>
+<instance part="GND6" gate="1" x="15.24" y="-68.58" rot="R180"/>
+<instance part="P+6" gate="VCC" x="27.94" y="-68.58"/>
 </instances>
 <busses>
 </busses>
@@ -4056,6 +4062,13 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <pinref part="R1" gate="G$1" pin="1"/>
 <pinref part="P+5" gate="VCC" pin="VCC"/>
 <wire x1="0" y1="0" x2="-5.08" y2="0" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="SUPPLY" gate="G$1" pin="1"/>
+<wire x1="22.86" y1="-81.28" x2="22.86" y2="-78.74" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="-78.74" x2="27.94" y2="-73.66" width="0.1524" layer="91"/>
+<pinref part="P+6" gate="VCC" pin="VCC"/>
+<wire x1="27.94" y1="-73.66" x2="27.94" y2="-71.12" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -4096,6 +4109,13 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <wire x1="82.55" y1="77.47" x2="86.36" y2="77.47" width="0.1524" layer="91"/>
 <pinref part="C3" gate="G$1" pin="2"/>
 <wire x1="86.36" y1="77.47" x2="81.28" y2="77.47" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="SUPPLY" gate="G$1" pin="2"/>
+<wire x1="20.32" y1="-81.28" x2="20.32" y2="-78.74" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="-78.74" x2="15.24" y2="-73.66" width="0.1524" layer="91"/>
+<pinref part="GND6" gate="1" pin="GND"/>
+<wire x1="15.24" y1="-73.66" x2="15.24" y2="-71.12" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -4145,8 +4165,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="1" gate="A" pin="6"/>
-<wire x1="45.72" y1="-76.2" x2="45.72" y2="-68.58" width="0.1524" layer="91"/>
-<label x="45.72" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="55.88" y1="-81.28" x2="55.88" y2="-73.66" width="0.1524" layer="91"/>
+<label x="55.88" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PB5" class="0">
@@ -4157,8 +4177,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="2" gate="A" pin="6"/>
-<wire x1="73.66" y1="-76.2" x2="73.66" y2="-68.58" width="0.1524" layer="91"/>
-<label x="73.66" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="83.82" y1="-81.28" x2="83.82" y2="-73.66" width="0.1524" layer="91"/>
+<label x="83.82" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PC2" class="0">
@@ -4169,8 +4189,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="1" gate="A" pin="10"/>
-<wire x1="35.56" y1="-76.2" x2="35.56" y2="-68.58" width="0.1524" layer="91"/>
-<label x="35.56" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="45.72" y1="-81.28" x2="45.72" y2="-73.66" width="0.1524" layer="91"/>
+<label x="45.72" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PC3" class="0">
@@ -4181,8 +4201,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="1" gate="A" pin="9"/>
-<wire x1="38.1" y1="-76.2" x2="38.1" y2="-60.96" width="0.1524" layer="91"/>
-<label x="38.1" y="-60.96" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="48.26" y1="-81.28" x2="48.26" y2="-66.04" width="0.1524" layer="91"/>
+<label x="48.26" y="-66.04" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PC4" class="0">
@@ -4193,8 +4213,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="1" gate="A" pin="8"/>
-<wire x1="40.64" y1="-76.2" x2="40.64" y2="-68.58" width="0.1524" layer="91"/>
-<label x="40.64" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="50.8" y1="-81.28" x2="50.8" y2="-73.66" width="0.1524" layer="91"/>
+<label x="50.8" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PC5" class="0">
@@ -4205,8 +4225,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="1" gate="A" pin="7"/>
-<wire x1="43.18" y1="-76.2" x2="43.18" y2="-55.88" width="0.1524" layer="91"/>
-<label x="43.18" y="-55.88" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="53.34" y1="-81.28" x2="53.34" y2="-60.96" width="0.1524" layer="91"/>
+<label x="53.34" y="-60.96" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PD0" class="0">
@@ -4216,9 +4236,9 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <label x="104.14" y="15.24" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<wire x1="48.26" y1="-76.2" x2="48.26" y2="-55.88" width="0.1524" layer="91"/>
+<wire x1="58.42" y1="-81.28" x2="58.42" y2="-60.96" width="0.1524" layer="91"/>
 <pinref part="1" gate="A" pin="5"/>
-<label x="48.26" y="-55.88" size="1.778" layer="95" rot="R90" xref="yes"/>
+<label x="58.42" y="-60.96" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PD1" class="0">
@@ -4229,8 +4249,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="1" gate="A" pin="4"/>
-<wire x1="50.8" y1="-76.2" x2="50.8" y2="-68.58" width="0.1524" layer="91"/>
-<label x="50.8" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="60.96" y1="-81.28" x2="60.96" y2="-73.66" width="0.1524" layer="91"/>
+<label x="60.96" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PD2" class="0">
@@ -4241,8 +4261,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="1" gate="A" pin="3"/>
-<wire x1="53.34" y1="-76.2" x2="53.34" y2="-60.96" width="0.1524" layer="91"/>
-<label x="53.34" y="-60.96" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="63.5" y1="-81.28" x2="63.5" y2="-66.04" width="0.1524" layer="91"/>
+<label x="63.5" y="-66.04" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PD3" class="0">
@@ -4253,8 +4273,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="1" gate="A" pin="2"/>
-<wire x1="55.88" y1="-76.2" x2="55.88" y2="-68.58" width="0.1524" layer="91"/>
-<label x="55.88" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="66.04" y1="-81.28" x2="66.04" y2="-73.66" width="0.1524" layer="91"/>
+<label x="66.04" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PD4" class="0">
@@ -4265,8 +4285,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="1" gate="A" pin="1"/>
-<wire x1="58.42" y1="-76.2" x2="58.42" y2="-60.96" width="0.1524" layer="91"/>
-<label x="58.42" y="-60.96" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="68.58" y1="-81.28" x2="68.58" y2="-66.04" width="0.1524" layer="91"/>
+<label x="68.58" y="-66.04" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PC1" class="0">
@@ -4277,8 +4297,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="2" gate="A" pin="1"/>
-<wire x1="86.36" y1="-76.2" x2="86.36" y2="-60.96" width="0.1524" layer="91"/>
-<label x="86.36" y="-60.96" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="96.52" y1="-81.28" x2="96.52" y2="-66.04" width="0.1524" layer="91"/>
+<label x="96.52" y="-66.04" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PC0" class="0">
@@ -4289,8 +4309,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="2" gate="A" pin="2"/>
-<wire x1="83.82" y1="-76.2" x2="83.82" y2="-68.58" width="0.1524" layer="91"/>
-<label x="83.82" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="93.98" y1="-81.28" x2="93.98" y2="-73.66" width="0.1524" layer="91"/>
+<label x="93.98" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="ADC6" class="0">
@@ -4301,8 +4321,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="2" gate="A" pin="5"/>
-<wire x1="76.2" y1="-76.2" x2="76.2" y2="-58.42" width="0.1524" layer="91"/>
-<label x="76.2" y="-58.42" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="86.36" y1="-81.28" x2="86.36" y2="-63.5" width="0.1524" layer="91"/>
+<label x="86.36" y="-63.5" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="ADC7" class="0">
@@ -4313,8 +4333,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="2" gate="A" pin="3"/>
-<wire x1="81.28" y1="-76.2" x2="81.28" y2="-58.42" width="0.1524" layer="91"/>
-<label x="81.28" y="-58.42" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="91.44" y1="-81.28" x2="91.44" y2="-63.5" width="0.1524" layer="91"/>
+<label x="91.44" y="-63.5" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="AREF" class="0">
@@ -4325,8 +4345,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="2" gate="A" pin="4"/>
-<wire x1="78.74" y1="-76.2" x2="78.74" y2="-68.58" width="0.1524" layer="91"/>
-<label x="78.74" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="88.9" y1="-81.28" x2="88.9" y2="-73.66" width="0.1524" layer="91"/>
+<label x="88.9" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PD5" class="0">
@@ -4337,8 +4357,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="3" gate="A" pin="8"/>
-<wire x1="101.6" y1="-76.2" x2="101.6" y2="-68.58" width="0.1524" layer="91"/>
-<label x="101.6" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="111.76" y1="-81.28" x2="111.76" y2="-73.66" width="0.1524" layer="91"/>
+<label x="111.76" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PD6" class="0">
@@ -4349,8 +4369,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="3" gate="A" pin="7"/>
-<wire x1="104.14" y1="-76.2" x2="104.14" y2="-60.96" width="0.1524" layer="91"/>
-<label x="104.14" y="-60.96" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="114.3" y1="-81.28" x2="114.3" y2="-66.04" width="0.1524" layer="91"/>
+<label x="114.3" y="-66.04" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PD7" class="0">
@@ -4361,8 +4381,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="3" gate="A" pin="6"/>
-<wire x1="106.68" y1="-76.2" x2="106.68" y2="-68.58" width="0.1524" layer="91"/>
-<label x="106.68" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="116.84" y1="-81.28" x2="116.84" y2="-73.66" width="0.1524" layer="91"/>
+<label x="116.84" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PB4" class="0">
@@ -4373,8 +4393,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="3" gate="A" pin="5"/>
-<wire x1="109.22" y1="-76.2" x2="109.22" y2="-60.96" width="0.1524" layer="91"/>
-<label x="109.22" y="-60.96" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="119.38" y1="-81.28" x2="119.38" y2="-66.04" width="0.1524" layer="91"/>
+<label x="119.38" y="-66.04" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PB3" class="0">
@@ -4385,8 +4405,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="3" gate="A" pin="4"/>
-<wire x1="111.76" y1="-76.2" x2="111.76" y2="-68.58" width="0.1524" layer="91"/>
-<label x="111.76" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="121.92" y1="-81.28" x2="121.92" y2="-73.66" width="0.1524" layer="91"/>
+<label x="121.92" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PB2" class="0">
@@ -4397,8 +4417,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="3" gate="A" pin="3"/>
-<wire x1="114.3" y1="-76.2" x2="114.3" y2="-60.96" width="0.1524" layer="91"/>
-<label x="114.3" y="-60.96" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="124.46" y1="-81.28" x2="124.46" y2="-66.04" width="0.1524" layer="91"/>
+<label x="124.46" y="-66.04" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PB1" class="0">
@@ -4409,8 +4429,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="3" gate="A" pin="2"/>
-<wire x1="116.84" y1="-76.2" x2="116.84" y2="-68.58" width="0.1524" layer="91"/>
-<label x="116.84" y="-68.58" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="127" y1="-81.28" x2="127" y2="-73.66" width="0.1524" layer="91"/>
+<label x="127" y="-73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="PB0" class="0">
@@ -4421,8 +4441,8 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </segment>
 <segment>
 <pinref part="3" gate="A" pin="1"/>
-<wire x1="119.38" y1="-76.2" x2="119.38" y2="-60.96" width="0.1524" layer="91"/>
-<label x="119.38" y="-60.96" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="129.54" y1="-81.28" x2="129.54" y2="-66.04" width="0.1524" layer="91"/>
+<label x="129.54" y="-66.04" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="N$3" class="0">
