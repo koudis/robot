@@ -1,0 +1,92 @@
++------------------+
+| ATmega_sort_TAOS |
++------------------+
+
+hw: stred i2cset -y 0 0x71 0x0D 0x90
+levo(pravy zasobnik) i2cset -y 0 0x71 0x0D 0x50
+pravo(levy zasobnik)i2cset -y 0 0x71 0x0D 0xD0
+
+PINOUT: viz. zapojeni.txt
+
+I2C dokumentace
+Adresa: 0x71
+(0xE2, 0xE3 pokud adresu chapeme osmibitove)
+
+Registry: (aktualni adresy radeji vzdy porovnat se zdrojakem)
+
+Puck Sort
+
+PSSR   0x00 Status Register
+Defaultní hodnota: 0x00
+  každý bit má svůj vlastní význam
+  +--------+--------+--------+--------+--------+--------+--------+--------+
+  |  PSSW  |  PSST  |  PSGW  |  PSGT  |  PSFE  |  PSGC  |  PSSE  |  PSLE  |
+  +--------+--------+--------+--------+--------+--------+--------+--------+
+   7 (MSB)                                                         0 (LSB)
+
+  PSLE (0x01) Light Enable
+    pokud je nastaven na 1, ledky na senzoru TAOS svítí
+
+  PSGC (0x04) Get Color
+    nastavením na 1 se sejme aktuální barva ze senozoru (přibližná délka snímání je kolem 100ms)
+    jakmile je barva sejmuta, tak se tento bit automaticky nastaví na 0
+    (opětovný zápis do registru PSSR již měření nezastaví, pokud se však znovu zapíše 1, tak se měření zresetuje a probíhá celé od začátku => při příliš častém zápisu se nemusí obnovovat všechny barevné složky!)
+
+  PSFE (0x08) Flipper Enable
+    pokud je bit nastaven na hodnotu 1, jsou generovány PWM signály pro obě serva, při zapsané 0 jsou oba piny nakonfigurované jako vstupní
+
+  PSSE (0x02) Sort Enable
+    zapnutí a vypnutí automatického třídění
+
+  PSSW (0x80) Set White
+    nastavení referenční bílé barvy dle aktuálního obsahu registrů PSCR, PSCB a PSCW
+
+  PSST (0x40) Set Threshold
+    nastavení hranice mezi puky a bílou barvou dle obsahu PSCW
+
+  PSSW (0x20) Get White
+    uložení referenční bílé barvy do registrů PSCR, PSCB a PSCW
+
+  PSST (0x10) Get Threshold
+    uložení hranice mezi puky a bílou barvou do PSCW
+
+následující hodnoty jsou konzistentní pouze pokud zrovna neprobíhá měření (bit PSGC v registru PSSR je nastaven na 0)
+PSCRL  0x01 Color Red Low
+PSCRH  0x02 Color Red High
+  aktuální hodnota červené složky (16 - bit) (little endian)
+PSCBL  0x03
+PSCBH  0x04
+  aktuální hodnota modré složky (16 - bit) (little endian)
+PSCWL  0x05
+PSCWH  0x06
+  aktuální hodnota bílé složky (16 - bit) (little endian)
+PSCGL  0x07
+PSCGH  0x08
+  aktuální hodnota zelené složky (16 - bit) (little endian)
+
+PSFT   0x09 Flipper Timeout (neimplementováno, jednotky jsou plánovány na 20ms - hodnota 50 se tedy rovná 1s, uvidíme vzhledem k dostupnému časovači)
+  nastavení, jak velké má mít třídící servo zpoždění:
+   konec detekce -> počkáme čas PSFT -> přenastavíme servo doprostřed
+
+PSFPR  0x0A Flipper Position Red
+  hodnota serva pokud detekuje červený puk (v normálním, ne-extended režímu)
+PSFPB  0x0B Flipper Position Blue
+  hodnota serva pokud detekuje modrý puk (v normálním, ne-extended režímu)
+PSFPC  0x0C Flipper Position Center
+  hodnota serva pokud nedetekuje puk (v normálním, ne-extended režímu)
+
+PSFP   0x0D
+Defaultní hodnota: 0x80
+  poloha prvního (třídícího) serva
+  hodnota se sama mění, pokud je zapnuto automatické třídění
+
+PSF2P  0x0E
+Defaultní hodnota: 0x80
+  poloha druhého serva (změna pouze na explicitní žádost po i2c)
+
+PSFEP  0x0F
+  poloha prvního (třídícího) serva v extended režimu (tedy s větším rozsahem)
+  hodnota se sama mění, pokud je zapnuto automatické třídění
+
+PSF2EP 0x10
+  poloha druhého serva v extended režimu (tedy s větším rozsahem) (změna pouze na explicitní žádost po i2c)

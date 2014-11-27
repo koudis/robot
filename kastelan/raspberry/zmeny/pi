@@ -1,0 +1,35 @@
+ssh-keygen
+ssh-copy-id -i ~/.ssh/id_rsa.pub git@195.140.254.170
+ssh-copy-id -i ~/.ssh/id_rsa.pub git@kastelan
+
+git clone ssh://git@195.140.254.170:443/home/git/puckcollect ~/puckcollect
+cd ~/puckcollect
+git remote add kastelan ssh://git@kastelan/home/git/puckcollect
+
+git pull kastelan master
+
+git config --global color.ui "auto"
+
+cat > ~/.vimrc <<EOF
+filetype plugin on
+filetype indent on
+set modeline
+set cindent
+set smartindent
+set autoindent
+
+set wildmenu
+set number
+set hlsearch
+set incsearch
+set smartcase
+
+syntax on
+
+set scrolloff=5
+
+nnoremap j gj
+nnoremap k gk
+
+set list listchars=trail:-,tab:<.,extends:>,precedes:<,nbsp:~
+EOF

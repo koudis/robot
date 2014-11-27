@@ -1,0 +1,54 @@
++---------------------+
+| ATmega_hradní_stráž |
++---------------------+
+
+PINOUT:
+atmega | usbasp | other
+-------+--------+------------
+1      | RST    |
+7      |        | VCC
+8      |        | GND
+15     |        | Speaker out
+17     | MOSI   |
+18     | MISO   |
+19     | SCK    |
+20     |        | VCC(opt)
+21     |        | VCC(opt)
+22     |        | GND(opt)
+27     |        | SDA
+28     |        | SCL
+
+I2C dokumentace
+Adresa: 0x77
+(0xEE, 0xEF pokud adresu chapeme osmibitove)
+
+PACKETOVÁ KOMUNIKACE
+první byte obsahuje počet tónů
+každá následující dvojice určuje notu
+první byte výšku tónu
+  horní 4 bity znamenají oktávu
+    0 --> -1. oktáva
+    5 -->  4. oktáva (A  4: 440Hz)  [0x59]
+    B --> 10. oktáva (C 10: 16.7kHz)[0xB0]
+  spodní 4 bity tón (včetně půltónů)
+    0 --> C  n
+    1 --> C# n
+    2 --> D  n
+    3 --> D# n
+    4 --> E  n
+    5 --> F  n
+    6 --> F# n
+    7 --> G  n
+    8 --> G# n
+    9 --> A  n
+    A --> A# n
+    B --> H  n
+    C --> C  n+1
+    D --> C# n+1
+    E --> D  n+1
+    F --> D# n+1
+  některé tóny mají 2 ekvivalnetní zápisy
+druhý byte délku tónu
+  čas = hodnota * 8.3ms
+  pokud je hodnota = 0, potom se chápe jako 256
+

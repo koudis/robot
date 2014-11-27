@@ -1,0 +1,2 @@
+ssh-copy-id root@169.254.0.109
+ssh-copy-id pi@169.254.0.109

@@ -1,0 +1,81 @@
++--------------+
+| ATmega_servo |
++--------------+
+  ovladani 2 serv pres i2c
+  vychazi z programu atmega_taos
+  alespon v prvnich verzich ma binarni rozhrani kompatibilni s atmega_taos
+  Podporuje vsak navic rozsirene rezimy serva. To se vyuzije pro plny rozsah 180°
+
++--------+
+| PINOUT |
++--------+
+  atmega   usbasp  other
+  PC6      RST
+  VCC              VCC
+  GND              GND
+  PB1              SERVO1
+  PB2              SERVO2
+  PB3      MOSI
+  PB4      MISO
+  PB5      SCK
+  PC4              SDA
+  PC5              SCL
+
++-----+
+| I2C |
++-----+
+  Minimální příklad
+    # povoleni serv
+    i2cset -y 0 0x73 0x00 0x08
+
+    # klasický režim
+    i2cset -y 0 0x73 0x0D <hodnota>
+    i2cset -y 0 0x73 0x0E <hodnota>
+
+    # rozšířený režim
+    i2cset -y 0 0x73 0x0F <hodnota>
+    i2cset -y 0 0x73 0x10 <hodnota>
+
+Adresa: 0x73
+(0xE6, 0xE7 pokud adresu chapeme osmibitove)
+
+Registry: (aktualni adresy radeji vzdy porovnat se zdrojakem)
+
+Atmega Sort
+
+AS_SR   0x00 Status Register
+Defaultní hodnota: 0x00
+  každý bit má svůj vlastní význam
+  +--------+--------+--------+--------+--------+--------+--------+--------+
+  |   --   |   --   |   --   |   --   | AS_SE  |   --   |   --   |   --   |
+  +--------+--------+--------+--------+--------+--------+--------+--------+
+   7 (MSB)                                                         0 (LSB)
+  AS_SE Servo Enable
+    pokud je nastaven na 1, atmega generuje signály pro obě serva
+  Ostatní bity zatím nemají žádnou funkci implementovánu
+
+AS_SS1   0x0D
+Defaultní hodnota: 0x80
+  poloha prvního (třídícího) serva ve standardním režimu +-45°
+
+AS_SS2   0x0E
+Defaultní hodnota: 0x80
+  poloha druhého (třídícího) serva ve standardním režimu +-45°
+
+AS_ES1   0x0F
+Defaultní hodnota: 0x80
+  poloha prvního (třídícího) serva v rozšířeném režimu +-90°
+
+AS_ES2   0x10
+Defaultní hodnota: 0x80
+  poloha druhého (třídícího) serva v rozšířeném režimu +-90°
+
++-------------------+
+| Soucasny software |
++-------------------+
+
+pouziva se:
+TIMER1
+  bezi na 50Hz
+  compare check A servo 1
+  compare check B servo 2

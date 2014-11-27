@@ -1,0 +1,16 @@
+wget 195.140.254.170:8080/puckcollect/img01
+wget 195.140.254.170:8080/puckcollect/img02
+wget 195.140.254.170:8080/puckcollect/img03
+wget 195.140.254.170:8080/puckcollect/img04
+wget 195.140.254.170:8080/puckcollect/img05
+wget 195.140.254.170:8080/puckcollect/img06
+wget 195.140.254.170:8080/puckcollect/img07
+wget 195.140.254.170:8080/puckcollect/img08
+wget 195.140.254.170:8080/puckcollect/img09
+wget 195.140.254.170:8080/puckcollect/img10
+wget 195.140.254.170:8080/puckcollect/img11
+wget 195.140.254.170:8080/puckcollect/img12
+wget 195.140.254.170:8080/puckcollect/img13
+wget 195.140.254.170:8080/puckcollect/img14
+wget 195.140.254.170:8080/puckcollect/img15
+wget 195.140.254.170:8080/puckcollect/img16

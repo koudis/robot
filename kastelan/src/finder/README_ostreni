@@ -1,0 +1,16 @@
+Jak ostrit kameru?
+
+Pro ostreni je vhodne mit maximalni rozliseni. To se ale pomalu prenasi.
+Proto je vhodne pouzit program ostreni na robotovi. Tento program sejme
+jeden snimek a vyrizne z nej ctverec 100x100 pixelu. Tento vyrez posle
+na svuj standardni vystup.
+
+Pro samotne ostreni je potreba stridat tyto dva prikazy:
+
+echo "./ostreni" | rsurveyor_cmd | tee cajicek
+./separate_image.sh cajicek |tail -c +2 | ../test/raw_image_viewer/viewer_ostreni
+
+(tail -c +2 je hack kvuli divnym koncum radku pri pouziti wifi spojeni)
+
+Je nutne mit viewer zkompilovany pro rozliseni 100x100 pixelu.
+

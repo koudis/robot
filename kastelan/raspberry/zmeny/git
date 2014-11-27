@@ -1,0 +1,4 @@
+ssh-keygen
+ssh-copy-id -i ~/.ssh/id_rsa.pub git@195.140.254.170
+git clone --bare ssh://git@195.140.254.170:443/home/git/kastelan ~/kastelan
+

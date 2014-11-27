@@ -1,0 +1,24 @@
+ROBOT_IP="169.254.0.103"
+ROBOT_PORT="10001"
+BFIN_TOOLCHAIN_PATH="/opt/uClinux/bfin-uclinux/bin/:/opt/uClinux/bfin-linux-uclibc/bin/"
+
+prepare_build_arm() {
+  cd ..
+  export PATH="$PATH:$BFIN_TOOLCHAIN_PATH"
+  [ -d build_arm ] || mkdir build_arm
+}
+
+prepare_build_x86() {
+  cd ..
+  [ -d build_x86 ] || mkdir build_x86
+}
+
+prepare_flash() {
+  cd ..
+  ping -c1 "$ROBOT_IP" || exit 1
+}
+
+prepare_fetch() {
+  cd ..
+  ping -c1 "$ROBOT_IP" || exit 1
+}

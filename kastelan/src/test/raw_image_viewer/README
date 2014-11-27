@@ -1,0 +1,8 @@
++----------------------+
+| Viewer of raw images |
++----------------------+
+
+uncomment #define USE_SECOND to enable the second way to translate image
+colorspace. The second type of translation is experimental only and it causes
+errors in some color channel brightness.
+

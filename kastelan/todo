@@ -1,0 +1,56 @@
+tri tlacitka na kalibraci
+nastaveni barvy a spusteni mainu + reset mainu + vypnuti - hlasit i nasi ledkou
+
+pak predratujeme desky
+
+tri ledky na signalizaci nasi barvy a stavu pripravenosti
+
+
+
+
+SW TODO:
+  přidat šikovnější funkce na zápis strategie
+    relativní pohyb
+    emergency run
+  napsat funkci logprintf
+    asi různé verbose levely
+    timestamp
+  doobrátit stavový automat tak, jak má být
+  možná: hermitovské křivky
+  virtuální bumpery NUTNÉ
+  atmega_servo: zemnit vypnuta serva (nebo pullupy?)
+    proc se zaklopky oteviraji pri otaceni levym kolem? staci aby byla napajena serva, zrejme se chyta na draty ruseni
+  kontrola, že se nahrálo správné nastavení do TAOSU
+
+SW detaily:
+  vypnout main zasunutím startovacího kabelu
+    automaticky by se měl spustit znovu (externí while cyklus)
+    v terminálu bude skript na vypnutí cyklu a zabití mainu
+      (vypnutí cyklu by mohlo fungovat nějak jako smazání souboru v tmpfs)
+
+HW bugy:
+  opěrné kuličky jsou docela zacpané prachem. Jsme schopni s tím něco udělat?
+  táhla pro záklopky se ohýbají -> vyrobit náhradní (radši dvě sady)
+  nutno opravit tlumiče bumperů
+  dořešit zasekávání puků před flipperem HOŘÍ!!!
+
+HW TODO:
+  vyrobit desku pro raspberry
+  přidat přední záklopku pro couvání.
+    kus plechu, který bude jezdit v item profilech
+    stačí ho zvedat.
+    dolu padne vlastní vahou -> neohnem si páčku pokud tam bude puk
+    nebo přidat foukání
+  pravy enkoder ma u motoru spatny kabel, obcas to nemeri (projevuje se to tak, ze robot kousek popojede a pak se kolem leveho kola zacne tocit na miste)
+  stavba noveho hriste: kečup z druhé strany?
+
+HW deska:
+  odstranit měnič na 3.3V (raspberry má vlastní z 5V)
+  potřeba silnějšího zdroje 5V
+  odstranit 74LVC245 (gpio raspberry nebudeme používat)
+  odstranit SD kartu
+  (ADC a SD20 bychom rádi naopak uvedli do provozu)
+
+
+HW detaily:
+  zdokumentovat zapojení na raspberry

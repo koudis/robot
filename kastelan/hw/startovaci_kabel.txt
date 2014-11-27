@@ -1,0 +1,11 @@
+Startovaci kabel pouziva stejny konektor jako nabijecka.
+Aby se nemohlo nic stat, je tam zapojena dioda. Proto je nutne konektor zapojit do robota spravne, jinak to nebude spinat.
+
+ BF
+GND ---------------- (objimka)
+ -     cerveny
+
+SIG --------- |>| -- (kolik)
+ +      zluty
+
+pokud se zapoji nabijecka, neprojde to pres diodu

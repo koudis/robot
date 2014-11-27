@@ -1,0 +1,1 @@
+g++ main.cpp finder.cpp fake_video_driver.cpp ../common/our_time.cpp ../common/variable_loader.cpp -o finder -lopencv_highgui -lopencv_core -lopencv_imgproc -I/usr/include/opencv/ -I ../common -DARCH_PC -pthread

@@ -1,0 +1,83 @@
+Propojení horní a dolní desky v robotovi
+
++------+
+| Data |
++------+
+  25-pin CAN (ten v paralelním portu)
+  dole samec, na kabelu samice
+
+  Canon 25:
+            |         |   |     |             |
+   1   2   3   4   5   6   7   8   9  10  11  12  13
+    14  15  16  17  18  19  20  21  22  23  24  25
+            |         |   |     |             |
+  SCL +5V GND EN1 EN3 GND GND SR1 BM0 BM2 BM4 RES RES
+    GND SDA EN0 EN2 +5V TTY SR0 GND BM1 BM3 BM5 RES
+            |         |   |     |             |
+     I2C    |    EN   |   |SERVO|   BUMPERY   |
+                     SABERTOOTH                   RESERVED
+
+  pin     funkce  barva dratu dole a pripadne funkce                              barva dratu nahore
+  --------------------------------------------------------------------------------------------------
+  0       GND     stineni, dole nezapojeny                                        tlusty hnedy
+
+  1       SCL     bily                                                            ruzovo-cerny
+  2       +5V     cerveny                                                         cerveno-bily
+  3       GND     enkodery zem hnedy (oba)                                        cerno-bily
+  4       EN1     zeleny levy                                                     svetlezeleny
+  5       EN3     zeleny pravy                                                    zeleno-cerny
+  6       GND     sabertooth cerny                                                sedy
+  7       GND     servo cerny                                                     ruzovy
+  8       SR1     servo vlevo bily                                                fialovo-bily
+  9       BM0     pravy predni (robota - ne kdyz koukam zepredu), hnedy           hnedo-bily
+  10      BM2     pravy zadni,modry s cervenym                                    modry
+  11      BM4     levy,zeleny                                                     zeleno-bily
+  12      RES     reserved 1 oranzovy                                             oranzovy
+  13      RES     reserved 3 bily                                                 bily
+
+  14      GND     cerny stineni                                                   sedo-cerny
+  15      SDA     zluty                                                           oranzovo-cerny
+  16      EN0     zluty levy                                                      zluty
+  17      EN2     zluty pravy                                                     zluto-cerny
+  18      +5V     enkodery +5V bily (oba)                                         cerveno-cerny
+  19      TTY     Sabertooth cerny s bilym pruhem                                 cerveny
+  20      SR0     oranzovy vpravo                                                 fialovy
+  21      GND     bumpery gnd                                                     hnedy
+  22      BM1     pravy,modry                                                     modro-bily
+  23      BM3     levy zadni, zeleny s cervenym                                   zeleny
+  24      BM5     levy predni, oranzovy                                           oranzovo-bily
+  25      RES     reserved 2 cerny                                                cerny
+
++----------+
+| Napájení |
++----------+
+  napajeci konektor:
+
+  1       +12 nahoru k vypinaci elektronika SW1 (cerveny pruh)
+  2       +12 dolu  od vypinace elektronika SW1
+  3       +12 displej (cerveny pruh)
+  4       GND k vypinaci motory (docasne zem pro displej)
+  5       +12 nahoru k vypinaci motory SW1 (cerveny pruh)
+  6       +12 dolu  od vypinace motory SW1
+  7       ---
+  8       +5  Pi (cerveny pruh)
+  9       GND Pi
+  10      GND k vypinaci elektronika
+
+      |
+   8     1
+  7   9   2
+  6  10   3
+   5     4
+
+  (pajeci strana horniho samecka)
+
++----------+
+| Nabíjení |
++----------+
+  nabíjecí konektory jsou dole
+  kvůli bumperům nemáme moc možností, kam je umístit
+  jsou v prostoru přímo nad levým kolem (uchycené v plechu na předním sloupku)
+  nápad ke zvážení: dát na horní desku plastový držák na kabely
+    1) nebudou viset přímo za konektor
+    2) nezapletou se do kol (díky délce konektoru se tak zřejmě nestane ani bez držáku)

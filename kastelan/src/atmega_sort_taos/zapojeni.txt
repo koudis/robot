@@ -1,0 +1,33 @@
+atmega  TAOS    usbasp  other
+PC6             RST
+PC1     S2
+PC0     S3
+PD4     OUT
+VCC                     VCC
+GND                     GND
+PB6     LED
+PB1                     SERVO1
+PB2                     SERVO2
+PB3             MOSI
+PB4             MISO
+PB5             SCK
+PC4                     SDA
+PC5                     SCL
+
+TAOS    atmega  other
+GND             GND
+VCC             VCC
+OUT     PD4
+LED     PB6
+S0              VCC
+S1              VCC
+S2      PC1
+S3      PC0
+
+Schema pinu na TAOSu
+GND     S0
+VCC     S1
+OUT     S2
+LED     S3
+
+        ^ na teto strane (S0-S3) je na vrchu tranzistor

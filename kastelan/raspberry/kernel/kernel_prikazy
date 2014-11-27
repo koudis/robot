@@ -1,0 +1,24 @@
+#zdroj http://www.raspberrypi.org/phpBB3/viewtopic.php?p=121691
+
+git clone git://github.com/raspberrypi/linux.git kernel
+cd kernel
+wget https://raw.github.com/raspberrypi/firmware/master/extra/Module.symvers
+
+#raspberry:
+zcat /proc/config.gz > .config
+
+cat >> .config <<EOF
+CONFIG_USBIP_CORE=m
+CONFIG_USBIP_VHCI_HCD=m
+CONFIG_USBIP_HOST=m
+CONFIG_USBIP_DEBUG=n
+EOF
+
+make oldconfig
+make LOCALVERSION=+ modules_prepare
+make SUBDIRS=drivers/staging/usbip
+
+#raspberry:
+sudo make SUBDIRS=drivers/staging/usbip modules_install
+sudo depmod -a
+
