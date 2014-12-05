@@ -354,10 +354,16 @@ UsedLibrary="/home/h/documents/eagle/libraries/SparkFun/SparkFun-Capacitors.lbr"
 UsedLibrary="/home/h/documents/eagle/libraries/SparkFun/SparkFun-Resistors.lbr"
 
 [Win_1]
+Type="Control Panel"
+Loc="1293 0 1677 1047"
+State=2
+Number=0
+
+[Win_2]
 Type="Schematic Editor"
 Loc="0 0 1677 1047"
 State=0
-Number=1
+Number=2
 File="motor_driver.sch"
 View="65.6383 -1.13832 124.81 75.9083"
 WireWidths=" 0 0.3048 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0.4064 0.1524"
@@ -400,12 +406,6 @@ PadsSameType=0
 Layer=91
 Views=" 1: 65.6383 -1.13832 124.81 75.9083"
 Sheet="1"
-
-[Win_2]
-Type="Control Panel"
-Loc="1041 0 2718 1047"
-State=2
-Number=0
 
 [Desktop]
 Screen="1680 1050"
