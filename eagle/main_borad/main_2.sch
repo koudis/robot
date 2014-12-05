@@ -2646,9 +2646,6 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <part name="JP8" library="pinhead" deviceset="PINHD-1X2" device=""/>
 <part name="P+1" library="supply1" deviceset="VCC" device=""/>
 <part name="GND7" library="supply1" deviceset="GND" device=""/>
-<part name="JP9" library="pinhead" deviceset="PINHD-1X2" device=""/>
-<part name="P+12" library="supply1" deviceset="VCC" device=""/>
-<part name="GND8" library="supply1" deviceset="GND" device=""/>
 <part name="JP10" library="pinhead" deviceset="PINHD-1X4" device=""/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="P+13" library="supply1" deviceset="VCC" device=""/>
@@ -2736,9 +2733,6 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <instance part="JP8" gate="G$1" x="68.58" y="-17.78"/>
 <instance part="P+1" gate="VCC" x="50.8" y="-17.78" rot="R90"/>
 <instance part="GND7" gate="1" x="50.8" y="-15.24" rot="R270"/>
-<instance part="JP9" gate="G$1" x="68.58" y="-2.54"/>
-<instance part="P+12" gate="VCC" x="50.8" y="-2.54" rot="R90"/>
-<instance part="GND8" gate="1" x="50.8" y="0" rot="R270"/>
 <instance part="JP10" gate="A" x="167.64" y="127" rot="R90"/>
 <instance part="GND9" gate="1" x="149.86" y="114.3" rot="R270"/>
 <instance part="P+13" gate="VCC" x="149.86" y="109.22" rot="R90"/>
@@ -2829,11 +2823,6 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <pinref part="JP8" gate="G$1" pin="2"/>
 <wire x1="66.04" y1="-17.78" x2="53.34" y2="-17.78" width="0.1524" layer="91"/>
 <pinref part="P+1" gate="VCC" pin="VCC"/>
-</segment>
-<segment>
-<pinref part="JP9" gate="G$1" pin="2"/>
-<wire x1="66.04" y1="-2.54" x2="53.34" y2="-2.54" width="0.1524" layer="91"/>
-<pinref part="P+12" gate="VCC" pin="VCC"/>
 </segment>
 <segment>
 <pinref part="JP10" gate="A" pin="4"/>
@@ -2982,11 +2971,6 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <pinref part="JP8" gate="G$1" pin="1"/>
 <wire x1="66.04" y1="-15.24" x2="53.34" y2="-15.24" width="0.1524" layer="91"/>
 <pinref part="GND7" gate="1" pin="GND"/>
-</segment>
-<segment>
-<pinref part="JP9" gate="G$1" pin="1"/>
-<wire x1="66.04" y1="0" x2="53.34" y2="0" width="0.1524" layer="91"/>
-<pinref part="GND8" gate="1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="JP10" gate="A" pin="1"/>
