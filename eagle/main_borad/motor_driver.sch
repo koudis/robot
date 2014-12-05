@@ -2203,7 +2203,7 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <part name="GND2" library="supply1" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="P+3" library="supply1" deviceset="VCC" device=""/>
-<part name="Y1" library="SparkFun-FreqCtrl" deviceset="CRYSTAL" device="HC49US"/>
+<part name="Y1" library="SparkFun-FreqCtrl" deviceset="CRYSTAL" device="SMD"/>
 <part name="C1" library="SparkFun-Capacitors" deviceset="CAP" device="1206" value="220pF"/>
 <part name="C2" library="SparkFun-Capacitors" deviceset="CAP" device="1206" value="220pF"/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
