@@ -2221,7 +2221,7 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <part name="R3" library="eagle-ltspice" deviceset="R" device="R1206" value="5k"/>
 <part name="P+6" library="supply1" deviceset="VCC" device=""/>
 <part name="P+7" library="supply1" deviceset="VCC" device=""/>
-<part name="C5" library="SparkFun-Capacitors" deviceset="CAP" device="1206" value="220nF"/>
+<part name="C5" library="SparkFun-Capacitors" deviceset="CAP" device="0805" value="220nF"/>
 <part name="JP6" library="pinhead" deviceset="PINHD-2X2" device=""/>
 <part name="P+8" library="supply1" deviceset="VCC" device=""/>
 <part name="GND6" library="supply1" deviceset="GND" device=""/>
