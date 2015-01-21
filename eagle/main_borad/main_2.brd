@@ -6,10 +6,10 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="1.27" unitdist="mm" unit="mm" style="lines" multiple="1" display="no" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.0125" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
@@ -133,13 +133,13 @@
 <hole x="55" y="55" drill="3.2"/>
 <hole x="55" y="5" drill="3.2"/>
 <hole x="5" y="5" drill="3.2"/>
-<text x="8.5725" y="46.99" size="1.016" layer="51">xck0</text>
-<text x="8.5725" y="44.45" size="1.016" layer="51">rxd0</text>
-<text x="8.5725" y="41.91" size="1.016" layer="51">txd0</text>
-<text x="8.5725" y="39.6875" size="1.016" layer="51">ss</text>
-<text x="8.5725" y="36.83" size="1.016" layer="51">mosi</text>
-<text x="8.5725" y="34.29" size="1.016" layer="51">miso</text>
-<text x="8.5725" y="31.75" size="1.016" layer="51">sck0</text>
+<text x="7.3025" y="46.99" size="1.016" layer="51">xck0/21</text>
+<text x="7.3025" y="44.45" size="1.016" layer="51">rxd0/22</text>
+<text x="7.3025" y="41.91" size="1.016" layer="51">txd0/23</text>
+<text x="7.3025" y="39.6875" size="1.016" layer="51">ss/24</text>
+<text x="7.3025" y="36.83" size="1.016" layer="51">mosi/25</text>
+<text x="7.3025" y="34.29" size="1.016" layer="51">miso/26</text>
+<text x="7.3025" y="31.75" size="1.016" layer="51">sck/27</text>
 <text x="23.495" y="8.255" size="1.016" layer="51" rot="R90">gnd</text>
 <text x="21.2725" y="7.9375" size="1.016" layer="51" rot="R90">sda1</text>
 <text x="19.05" y="8.255" size="1.016" layer="51" rot="R90">scl1</text>
@@ -149,12 +149,12 @@
 <text x="28.575" y="7.3025" size="1.016" layer="51" rot="R90">pdi-data</text>
 <text x="19.05" y="4.7625" size="1.016" layer="51" rot="R90">5v</text>
 <text x="16.8275" y="4.7625" size="1.016" layer="51" rot="R90">scl1</text>
-<text x="25.7175" y="54.9275" size="1.016" layer="51" rot="R270">mosi</text>
-<text x="23.1775" y="54.9275" size="1.016" layer="51" rot="R270">miso</text>
-<text x="20.6375" y="55.88" size="1.016" layer="51" rot="R270">sck/17</text>
+<text x="25.7175" y="57.4675" size="1.016" layer="51" rot="R270">mosi/15</text>
+<text x="23.1775" y="57.4675" size="1.016" layer="51" rot="R270">miso/16</text>
+<text x="20.6375" y="57.15" size="1.016" layer="51" rot="R270">sck/17</text>
 <text x="40.64" y="52.3875" size="1.016" layer="51" rot="R90">gnd</text>
-<text x="38.1" y="52.705" size="1.016" layer="51" rot="R90">sda0</text>
-<text x="35.56" y="52.705" size="1.016" layer="51" rot="R90">scl0</text>
+<text x="38.1" y="52.705" size="1.016" layer="51" rot="R90">sda0/10</text>
+<text x="35.56" y="52.705" size="1.016" layer="51" rot="R90">scl0/11</text>
 <text x="33.02" y="52.705" size="1.016" layer="51" rot="R90">vcc</text>
 <text x="50.4825" y="8.5725" size="1.016" layer="51" rot="R90">gnd</text>
 <text x="48.26" y="8.5725" size="1.016" layer="51" rot="R90">sda0</text>
@@ -172,6 +172,8 @@
 <dimension x1="55" y1="5" x2="55" y2="55" x3="74.93" y3="30" textsize="1.27" layer="46"/>
 <dimension x1="60" y1="0" x2="60" y2="60" x3="83.82" y3="30" textsize="1.27" layer="46"/>
 <dimension x1="0" y1="0" x2="60" y2="0" x3="30" y3="-20.32" textsize="1.27" layer="46"/>
+<text x="21.2725" y="4.1275" size="1.016" layer="51" rot="R90">sda1</text>
+<text x="23.495" y="4.7625" size="1.016" layer="51" rot="R90">gnd</text>
 </plain>
 <libraries>
 <library name="eagle-ltspice">
@@ -815,12 +817,18 @@ design rules under a new name.</description>
 <element name="JP1" library="pinhead" package="1X03" value="" x="30.7975" y="18.7325" rot="R180"/>
 <element name="JP2" library="pinhead" package="1X07" value="" x="13.97" y="40.005" rot="R270"/>
 <element name="JP3" library="pinhead" package="1X04" value="" x="19.3675" y="14.605" rot="R180"/>
-<element name="JP4" library="pinhead" package="1X04" value="" x="19.3675" y="27.305" rot="R180"/>
+<element name="JP4" library="pinhead" package="1X04" value="" x="19.3675" y="27.305" smashed="yes" rot="R180">
+<attribute name="NAME" x="18.1737" y="30.5562" size="1.27" layer="25" ratio="10" rot="R180"/>
+<attribute name="VALUE" x="24.4475" y="30.48" size="1.27" layer="27" rot="R180"/>
+</element>
 <element name="JP5" library="pinhead" package="1X04" value="" x="42.8625" y="45.4025" smashed="yes" rot="MR0">
 <attribute name="NAME" x="51.1937" y="45.6438" size="1.27" layer="26" ratio="10" rot="MR0"/>
 <attribute name="VALUE" x="47.9425" y="42.2275" size="1.27" layer="28" rot="MR0"/>
 </element>
-<element name="JP6" library="pinhead" package="1X03" value="" x="23.8125" y="49.8475"/>
+<element name="JP6" library="pinhead" package="1X03" value="" x="23.8125" y="49.8475" smashed="yes">
+<attribute name="NAME" x="17.3863" y="51.6763" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="20.0025" y="46.6725" size="1.27" layer="27"/>
+</element>
 <element name="JP7" library="pinhead" package="1X01" value="" x="28.2575" y="14.605"/>
 <element name="LED2" library="SparkFun-LED" package="LED-1206" value="" x="44.1325" y="15.5575" rot="R270"/>
 <element name="LED3" library="SparkFun-LED" package="LED-1206" value="" x="40.3225" y="15.5575" rot="R270"/>
@@ -866,7 +874,7 @@ design rules under a new name.</description>
 <element name="R3" library="eagle-ltspice" package="R0805" value="3.3k" x="25.0825" y="19.05" smashed="yes" rot="R90">
 <attribute name="SPICEMODEL" value="NONE" x="25.0825" y="19.05" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="25.0825" y="19.05" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="NAME" x="27.6225" y="21.2725" size="1.27" layer="25" rot="R90"/>
+<attribute name="NAME" x="27.6225" y="20.0025" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="27.6225" y="18.415" size="1.27" layer="27" rot="R90"/>
 </element>
 <element name="R4" library="eagle-ltspice" package="R0805" value="3.3k" x="13.6525" y="19.05" smashed="yes" rot="R270">
@@ -1147,7 +1155,6 @@ design rules under a new name.</description>
 <wire x1="43.495" y1="34.9275" x2="43.4975" y2="34.925" width="0.3048" layer="1"/>
 <wire x1="43.495" y1="34.46" x2="43.495" y2="34.9275" width="0.3048" layer="1"/>
 <wire x1="43.18" y1="35.56" x2="41.91" y2="35.56" width="0.3048" layer="1"/>
-<contactref element="JP10" pad="3"/>
 <wire x1="39.055" y1="36.8275" x2="39.0525" y2="36.83" width="0.3048" layer="1"/>
 <wire x1="39.0525" y1="36.83" x2="39.0525" y2="37.7825" width="0.3048" layer="1"/>
 <wire x1="39.0525" y1="37.7825" x2="39.0525" y2="38.1" width="0.3048" layer="1"/>
@@ -1158,7 +1165,6 @@ design rules under a new name.</description>
 <wire x1="34.29" y1="42.2275" x2="34.29" y2="42.545" width="0.3048" layer="1"/>
 <wire x1="34.29" y1="42.545" x2="34.29" y2="46.355" width="0.3048" layer="1"/>
 <wire x1="34.29" y1="46.355" x2="35.2425" y2="47.3075" width="0.3048" layer="1"/>
-<wire x1="35.2425" y1="47.3075" x2="35.2425" y2="49.8475" width="0.3048" layer="1"/>
 <wire x1="40.6425" y1="36.8275" x2="40.6425" y2="37.4625" width="0.3048" layer="1"/>
 <wire x1="40.6425" y1="37.4625" x2="40.64" y2="37.465" width="0.3048" layer="1"/>
 <wire x1="40.64" y1="37.465" x2="40.64" y2="37.7825" width="0.3048" layer="1"/>
@@ -1176,6 +1182,8 @@ design rules under a new name.</description>
 <wire x1="38.1" y1="41.91" x2="38.1" y2="40.3225" width="0.3048" layer="1"/>
 <wire x1="38.1" y1="40.3225" x2="39.0525" y2="39.37" width="0.3048" layer="1"/>
 <wire x1="39.0525" y1="39.37" x2="39.0525" y2="38.4175" width="0.3048" layer="1"/>
+<contactref element="JP10" pad="3"/>
+<wire x1="35.2425" y1="49.8475" x2="35.2425" y2="47.3075" width="0.3048" layer="1"/>
 </signal>
 <signal name="SDA0">
 <contactref element="U1" pad="10"/>
