@@ -3649,13 +3649,13 @@ Source: http://www.osram.convergy.de/</description>
 <part name="P+10" library="supply1" deviceset="VCC" device=""/>
 <part name="LED1" library="adafruit" deviceset="LED" device="CHIPLED_0805"/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
-<part name="R4" library="eagle-ltspice" deviceset="R" device="" value="1k"/>
+<part name="R4" library="eagle-ltspice" deviceset="R" device="" value="150k"/>
 <part name="P+11" library="supply1" deviceset="VCC" device=""/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
 <part name="JP4" library="pinhead" deviceset="PINHD-2X3" device=""/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
 <part name="P+12" library="supply1" deviceset="VCC" device=""/>
-<part name="R5" library="eagle-ltspice" deviceset="R" device="" value="1k"/>
+<part name="R5" library="eagle-ltspice" deviceset="R" device="" value="22k"/>
 <part name="LED2" library="adafruit" deviceset="LED" device="CHIPLED_0805"/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 </parts>
