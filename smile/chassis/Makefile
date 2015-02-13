@@ -1,25 +1,45 @@
 
-AVRGCC='/media/solid/avr/bin/avr-gcc'
-AVROBJCOPY='/media/solid/avr/bin/avr-objcopy'
-AVRDUDE='/media/solid/avr/bin/avrdude'
+TARGET_MCU =atmega8a
+CC         ='/media/solid/avr/bin/avr-gcc'
+AVROBJCOPY ='/media/solid/avr/bin/avr-objcopy'
+AVRDUDE    ='/media/solid/avr/bin/avrdude'
+OPTIMIZE   =-Os
+
+DEFS       =
+
+override CFLAGS  = -g -Wall $(OPTIMIZE) $(DEFS) --std=gnu99
+override LDFLAGS = -Wall 
+
+include conf/main.mk
 
 
-all: main.atxmega128a4u.hex
 
-install: all
-	sudo $(AVRDUDE) -Uflash:w:main.atxmega128a4u.hex:i -p x128a4u -c dragon_pdi -B 10
 
-read:
-	$(AVRDUDE) -c dragon_pdi -p x128a4u -P usb –U flash:r:r_main.atxmega128a4u.hex -B10
+all: main.atmega8a.hex
+
+main.atmega8a.hex: lib/TWI_slave.o
+
+
+
+
+$(call init_mmcu,atmega8a)
+$(call include_conf,atmega8a)
+$(call include_lib,lib)
+#$(call include_program_conf,main.atmega8a)
+
+
+
+
+target_file_name=$(call get_target_file_name,atmega8a,main)
+flash: all
+	sudo $(AVRDUDE) \
+		-B 5 \
+		-Uflash:w:$(target_file_name):i \
+		-p $(CONF_AVRDUDE_INSTALL_MCU_ID) \
+		-c $(CONF_AVRDUDE_INSTALL_PRG) \
+		-P $(CONF_AVRDUDE_INSTALL_PRG_DEV)
 
 clean:
-	rm *.hex *.o *.elf
+	rm -f *.hex *.elf *.o $(M_CLEAN_VAR)
 
-
-%.atxmega128a4u.hex : %.atxmega128a4u.c
-	$(AVRGCC) -g -Os -mmcu=atxmega128a4u -c $<
-	$(AVRGCC) -mmcu=atxmega128a4u -o $(patsubst %.c,%.elf,$<) $(patsubst %.c,%.o,$<)
-	$(AVROBJCOPY) -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures -O ihex $(patsubst %.c,%.elf,$<) $(patsubst %.c,%.hex,$<)
-
-
-.PHONY=all install
+.PHONY=all flash clean

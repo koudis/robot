@@ -6,6 +6,12 @@
 #include <util/atomic.h>
 #include <util/delay.h>
 
+#include "lib/TWI_slave.h"
+
+union doublebyte {
+	uint16_t value;
+	uint8_t byte[2];
+};
 
 
 #define Encoder_IRQ_A_MASK 0b10 
@@ -23,8 +29,8 @@
 #define Encoder_DIRECTION_BACKWARD 2
 #define Encoder_DIRECTION_DEFAULT  0
 struct Encoder_s {
-	int32_t counter_a;
-	int32_t counter_b;
+	uint16_t counter_a;
+	uint16_t counter_b;
 	uint8_t last_state[3];
 	uint8_t direction;
 } Encoder_default = {0};
@@ -55,8 +61,8 @@ EncoderState_t enc_state_order_b[4] = {
 
 
 
-void inta_handler(Encoder_t* enc) __attribute__((always_inline));
-void inta_handler(Encoder_t* enc) {
+void encoder_inta(Encoder_t* enc) __attribute__((always_inline));
+void encoder_inta(Encoder_t* enc) {
 	ATOMIC_BLOCK(ATOMIC_FORCEON) {
 		enc->last_state[0] = enc->last_state[1];
 		enc->last_state[1] = enc->last_state[1] ^ Encoder_IRQ_A_MASK;
@@ -79,8 +85,8 @@ void inta_handler(Encoder_t* enc) {
 		enc->counter_a -= 1;
 }
 
-void intb_handler(Encoder_t* enc) __attribute__((always_inline));
-void intb_handler(Encoder_t* enc) {
+void encoder_intb(Encoder_t* enc) __attribute__((always_inline));
+void encoder_intb(Encoder_t* enc) {
 	ATOMIC_BLOCK(ATOMIC_FORCEON) {
 		enc->last_state[0] = enc->last_state[1];
 		enc->last_state[1] = enc->last_state[1] ^ Encoder_IRQ_B_MASK;
@@ -126,35 +132,48 @@ void init() {
 
 
 ISR(INT0_vect, ISR_NOBLOCK) {
-	inta_handler(&enc);
+	encoder_inta(&enc);
 }
 
 ISR(INT1_vect, ISR_NOBLOCK) {
-	intb_handler(&enc);
+	encoder_intb(&enc);
 }
 
 
 
 int main(void) {
+	TWI_Slave_Initialise(0b00000100);
 	init();
 	_delay_ms(100);
 
-	DDRC  = 0b00110000;
-	PORTC = 0b00000000;
+	DDRD = 0b00000011;
+	PORTD = 0b00000011;
+
+
+	unsigned char p[5] = {1,2,3,4,5};
+	unsigned char p2[5] = {2,2,3,4,5};
+	//TWI_Start_Transceiver_With_Data(p2, 1);
 
 	while(1) {
 
-		if(enc.counter_a > 32000 || enc.counter_a < -32000) {
+		if(enc.counter_a > 31000 || enc.counter_a < -31000) {
 			enc.counter_a = 0;
 		}
-		if(enc.counter_b > 32000 || enc.counter_b < -32000) {
+		if(enc.counter_b > 31000 || enc.counter_b < -31000) {
 			enc.counter_b = 0;
 		}
 
-		if(enc.direction == Encoder_DIRECTION_BACKWARD)
-			PORTC = 0b00000000;
-		if(enc.direction == Encoder_DIRECTION_FORWARD)
-			PORTC = 0b00100000;
+		if(!TWI_Transceiver_Busy()) {
+			if(enc.direction == Encoder_DIRECTION_BACKWARD) {
+				TWI_Start_Transceiver_With_Data(p, 1);
+				PORTD = 0b00000011;
+			}
+			if(enc.direction == Encoder_DIRECTION_FORWARD) {
+				TWI_Start_Transceiver_With_Data(p2, 1);
+				PORTD = 0b00000000;
+			}
+		}
+		
 	}
 
 	return 0;
