@@ -55,10 +55,10 @@ include conf/mcu/$(1).mk
 endef
 
 define include_program_conf
-$(eval $(call include_program_conf_s,$(1)))
+$(eval $(call include_program_conf_s,$(1),$(2)))
 endef
 define include_program_conf_s
-include $(1).mk
+$(if $(wildcard $(2).$(1).mk),include $(2).$(1).mk,)
 endef
 
 # genere target file name
