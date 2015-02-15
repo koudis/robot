@@ -62,12 +62,7 @@ include $(1).mk
 endef
 
 # genere target file name
-define get_target_file_name
-$(eval $(call get_target_file_name_s,$(1),$(2)))
-endef
-define get_target_file_name_s
-$(2).$(1).hex
-endef
+get_target_file_name=$(2).$(1).hex
 
 
 # Library finctions
@@ -79,7 +74,7 @@ define addbook_s
 $$(ACTDIR)/$(1).o: $$(ACTDIR)/$(1).c $$(ACTDIR)/$(1).h
 	$(call compile_with_mmcu_rn,$$(M_TARGET_MCU),$$<,$$(ACTDIR)/$(1).o)
 
-M_CLEAN_VAR := $(addprefix $(M_CLEAN_VAR),$(ACTDIR)/$(1).o)
+M_CLEAN_VAR += $(ACTDIR)/$(1).o
 endef
 
 
