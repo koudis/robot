@@ -7,22 +7,23 @@ OPTIMIZE   =-O3
 
 DEFS       =
 
-override CFLAGS  = -g -Wall $(OPTIMIZE) $(DEFS) --std=gnu11
+override CFLAGS  = -g -Wall $(OPTIMIZE) $(DEFS) --std=gnu99
 override LDFLAGS = -Wall 
 
 include conf/main.mk
 
 
 
-TARGET_FILE_NAME:=$(call get_target_file_name,atmega8a,main)
+TARGET_FILE_NAME:=$(call get_target_file_name,$(TARGET_MCU),main)
 
 all: $(TARGET_FILE_NAME)
 
 
 
 
-$(call init_mmcu,atmega8a)
-$(call include_conf,atmega8a)
+#$(call init_env_constant,atmega8a)
+$(call init_mmcu,$(TARGET_MCU))
+$(call include_conf,$(TARGET_MCU))
 $(call include_lib,lib)
 $(call include_program_conf,atmega8a,main)
 
