@@ -1,5 +1,5 @@
 
-TARGET_MCU =atmega8a
+TARGET_MCU =atxmega128a4u
 CC         ='/media/solid/avr/bin/avr-gcc'
 AVROBJCOPY ='/media/solid/avr/bin/avr-objcopy'
 AVRDUDE    ='/media/solid/avr/bin/avrdude'
@@ -25,7 +25,7 @@ all: $(TARGET_FILE_NAME)
 $(call init_mmcu,$(TARGET_MCU))
 $(call include_conf,$(TARGET_MCU))
 $(call include_lib,lib)
-$(call include_program_conf,atmega8a,main)
+$(call include_program_conf,$(TARGET_MCU),main)
 
 
 
@@ -34,8 +34,16 @@ $(call include_program_conf,atmega8a,main)
 
 flash: all
 	sudo $(AVRDUDE) \
-		-B 5 \
+		$(CONF_AVRDUDE_INSTALL_PARAMS) \
 		-Uflash:w:$(TARGET_FILE_NAME):i \
+		-p $(CONF_AVRDUDE_INSTALL_MCU_ID) \
+		-c $(CONF_AVRDUDE_INSTALL_PRG) \
+		-P $(CONF_AVRDUDE_INSTALL_PRG_DEV)
+
+fuses:
+	sudo $(AVRDUDE) \
+		$(CONF_AVRDUDE_INSTALL_PARAMS) \
+		$(PRG_CONF_AVRDUDE_FUSE) \
 		-p $(CONF_AVRDUDE_INSTALL_MCU_ID) \
 		-c $(CONF_AVRDUDE_INSTALL_PRG) \
 		-P $(CONF_AVRDUDE_INSTALL_PRG_DEV)
