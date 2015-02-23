@@ -38,8 +38,8 @@
 #define Encoder_DIRECTION_DEFAULT  0
 
 struct Encoder_s {
-	uint16_t counter_a;
-	uint16_t counter_b;
+	int32_t counter_a;
+	int32_t counter_b;
 	uint8_t  last_state[2];
 	uint8_t  direction;
 };
@@ -51,7 +51,6 @@ typedef enum {
 	S2 = 0b11, // 3
 	S3 = 0b01  // 1
 } EncoderState_t;
-
 
 
 
