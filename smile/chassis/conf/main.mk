@@ -29,7 +29,7 @@
 # files for clean
 M_CLEAN_VAR  =
 # where i am :).
-ACT_DIR      =
+ACTDIR      =
 
 
 
@@ -44,7 +44,7 @@ define include_lib
 $(eval $(call include_lib_s,$(1)))
 endef
 define include_lib_s
-include $(1)/rules.mk
+$(if $(ACTDIR),include $(ACTDIR)/$(1)/rules.mk,include $(1)/rules.mk)
 endef
 
 define include_conf
@@ -84,7 +84,7 @@ define init_mmcu
 	$(eval $(call init_mmcu_s,$(1)))
 endef
 define init_mmcu_s
-M_TARGET_MCU=$(1)
+M_TARGET_MCU:=$(1)
 %.$(1).o: %.$(1).c
 	$(call compile_with_mmcu,$(1),$$^)
 
@@ -106,5 +106,4 @@ endef
 define link_with_mmcu
 $(CC) $(LFLAGS) -mmcu=$1 -o $2 $3
 endef
-
 
