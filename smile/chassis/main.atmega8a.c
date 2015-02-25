@@ -61,6 +61,42 @@ int main(void) {
 	DDRD  |= (1 << 7);
 	PORTD |= (1 << 7);
 
+
+
+	// OC1* must be set as output
+	DDRB |= (1 << 1);
+	DDRB |= (1 << 2);
+
+	TCCR1A |= (0 << COM1A0) | (1 << COM1A1);   // set OC1A to hight on compare match
+	TCCR1A |= (0 << COM1B0) | (1 << COM1B1);   // set OC1B to hight on compare match
+
+	// choose phase correct pwm
+	TCCR1A |= (1 << WGM10) | (0 << WGM11);
+	TCCR1B |= (0 << WGM11) | (0 << WGM13);
+
+	// set compare match register for OC1A
+	OCR1AL = 10;
+	OCR1AH = 0;
+
+	char i = 0;
+	int8_t k = 1;
+
+	// select clock source without prescaller
+	TCCR1B |= (1 << CS10) | (0 << CS11) | (0 << CS12);
+	while(1) {
+		// set compare match register for OC1B
+		OCR1BL = i;
+		OCR1BH = 0;
+		if(i > 254)
+			k = -1;
+		if(i < 2)
+			k = 1;
+		i += k;
+		_delay_ms(15);
+	}
+
+
+
 	TWI_Start_Transceiver();
 	while(1) {
 		if(!TWI_Transceiver_Busy()) {
@@ -79,10 +115,10 @@ int main(void) {
 						message_buff[0] = 0;
 						break;
 					case PROTO_INSTR_SET_FORWARD:
-						uint8_t data = message_buff[0] & PROTO_DATA_GET;
+						//data = message_buff[0] & PROTO_DATA_GET;
 						break;
 					case PROTO_INSTR_SET_BACKWARD:
-						uint8_t data = message_buff[0] & PROTO_DATA_GET;
+						//data = message_buff[0] & PROTO_DATA_GET;
 						break;
 					case PROTO_INSTR_RESET:
 						ATOMIC_BLOCK(ATOMIC_FORCEON) {
