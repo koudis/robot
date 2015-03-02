@@ -2,6 +2,7 @@
 #define LIB_ENCODER_quadrature
 
 #include <inttypes.h>
+#include "../preproc.h"
 
 /**
  *  ;
@@ -30,6 +31,13 @@
 #define Encoder_IRQ_B_VECTOR 
 #endif
 
+#define Encoder_PORT_NAME D
+#define Encoder_PORT_PINA 2
+#define Encoder_PORT_PINB 3
+
+#define Encoder_PORT_DDR  token_paste2(DDR, Encoder_PORT)
+#define Encoder_PORT_PORT token_paste2(PORT, Encoder_PORT_NAME)
+
 #define Encoder_IRQ_A_MASK 0b10 
 #define Encoder_IRQ_B_MASK 0b01 
 
@@ -53,6 +61,8 @@ typedef enum {
 } EncoderState_t;
 
 
+
+void encoder_init(Encoder_t* enc);
 
 /**
  * Interupt for A channel

@@ -91,12 +91,12 @@ typedef enum TWIS_RESULT_enum {
 typedef struct TWI_Slave {
 	TWI_t *interface;                               /*!< Pointer to what interface to use*/
 	void (*Process_Data) (void);                    /*!< Pointer to process data function*/
-	register8_t receivedData[TWIS_RECEIVE_BUFFER_SIZE]; /*!< Read data*/
-	register8_t sendData[TWIS_SEND_BUFFER_SIZE];        /*!< Data to write*/
-	register8_t bytesReceived;                          /*!< Number of bytes received*/
-	register8_t bytesSent;                              /*!< Number of bytes sent*/
-	register8_t status;                                 /*!< Status of transaction*/
-	register8_t result;                                 /*!< Result of transaction*/
+	uint8_t receivedData[TWIS_RECEIVE_BUFFER_SIZE]; /*!< Read data*/
+	uint8_t sendData[TWIS_SEND_BUFFER_SIZE];        /*!< Data to write*/
+	uint8_t bytesReceived;                          /*!< Number of bytes received*/
+	uint8_t bytesSent;                              /*!< Number of bytes sent*/
+	uint8_t status;                                 /*!< Status of transaction*/
+	uint8_t result;                                 /*!< Result of transaction*/
 	bool abort;                                     /*!< Strobe to abort*/
 } TWI_Slave_t;
 

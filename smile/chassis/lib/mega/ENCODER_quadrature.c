@@ -42,6 +42,14 @@ const EncoderState_t* const enc_state_order[2] = {
 
 
 
+
+__attribute__((always_inline)) void encoder_init(Encoder_t* enc) {
+	if(Encoder_PORT_PORT & (1 << Encoder_PORT_PINA))
+		enc->last_state[0] |= Encoder_IRQ_A_MASK;
+	if(Encoder_PORT_PORT & (1 << Encoder_PORT_PINB))
+		enc->last_state[0] |= Encoder_IRQ_B_MASK;
+}
+
 __attribute__((always_inline)) void encoder_inta(Encoder_t* enc) {
 	ATOMIC_BLOCK(ATOMIC_FORCEON) {
 		enc->last_state[0] = enc->last_state[1];
