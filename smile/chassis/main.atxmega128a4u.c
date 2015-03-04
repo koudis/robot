@@ -14,7 +14,7 @@ void TWI_SlaveWrite(TWI_Slave_t* twis, uint8_t* data, uint8_t bytes_to_send);
 uint8_t TWI_MasterWriteWait(TWI_Master_t *twi, uint8_t address, uint8_t * writeData, uint8_t bytesToWrite);
 uint8_t TWI_MasterWriteReadWait(TWI_Master_t *twi, uint8_t address, uint8_t * writeData, uint8_t bytesToWrite, uint8_t bytesToRead);
 
-void copy_array_into(uint8_t* a1,uint8_t* a2, uint8_t n2);
+void copy_array_into(uint8_t* a1,uint8_t* a2, uint8_t n2, uint8_t from);
 
 uint8_t TWI_MasterWriteWait(TWI_Master_t *twi, uint8_t address, uint8_t * writeData, uint8_t bytesToWrite) {
 	TWI_MasterWrite(twi, address, writeData, bytesToWrite);
@@ -27,7 +27,7 @@ uint8_t TWI_MasterWriteReadWait(TWI_Master_t *twi, uint8_t address, uint8_t * wr
 }
 
 void TWI_SlaveWrite(TWI_Slave_t* twis, uint8_t* data, uint8_t bytes_to_send) {
-	copy_array_into(twis->sendData, data, bytes_to_send);
+	copy_array_into(twis->sendData, data, bytes_to_send, 0);
 	twis->bytesSent = 0;
 }
 
@@ -68,7 +68,7 @@ Quadbyte_float_t _quadbyte;
 
 typedef struct Encoders {
 	uint8_t  data[3][4];
-	float  i distance;
+	float    distance;
 	uint8_t  ready;
 } Encoders_t;
 
@@ -116,17 +116,27 @@ typedef struct Command {
 	void*      dataref;
 } Command_t;
 
-typedef struct Commnad_twi {
+typedef struct Command_twi {
 	TWI_Slave_t*  twis;
 	TWI_Master_t* twim;
-} Commnad_twi_t;
+} Command_twi_t;
 
-void command_handler(const Command_t* com, const Commnad_twi_t* commnad_twi);
-void command_handler_motor(const Command_t* com, const Commnad_twi_t* command_twi);
-void command_handler_encoder(const Command_t* com, const Commnad_twi_t* command_twi);
-void command_handler_vector(const Command_t* com, const Commnad_twi_t* command_twi);
+void command_init(Command_t* const  com, Command_twi_t* const command_twi);
+void command_handler(Command_t* const com, Command_twi_t* const commnad_twi);
+void command_handler_motor(Command_t* const com, Command_twi_t* const command_twi);
+void command_handler_encoder(Command_t* const com, Command_twi_t* const command_twi);
+void command_handler_vector(Command_t* const com, Command_twi_t* const command_twi);
 
-void command_handler(const Command_t* com, const Commnad_twi_t* command_twi) {
+void command_init(Command_t* const com, Command_twi_t* const command_twi) {
+	com->command    = COMMAND_HEAD_DO_NOTHING;
+	com->data_count = 0;
+	com->dataref    = 0;
+
+	command_twi->twis = 0;
+	command_twi->twim = 0;
+}
+
+void command_handler(Command_t* const com, Command_twi_t* const command_twi) {
 	uint8_t command = com->command;
 	switch(command & COMMAND_HEAD) {
 		case COMMAND_HEAD_DO_NOTHING:
@@ -145,7 +155,7 @@ void command_handler(const Command_t* com, const Commnad_twi_t* command_twi) {
 	}
 }
 
-void command_handler_motor(const Command_t* com, const Commnad_twi_t* command_twi) {
+void command_handler_motor(Command_t* const com, Command_twi_t* const command_twi) {
 	TWI_Master_t* twim = command_twi->twim; 
 	uint8_t attr       = (com->command & COMMAND_ATTR);
 	uint8_t data[2]    = { 0 };
@@ -174,7 +184,7 @@ void command_handler_motor(const Command_t* com, const Commnad_twi_t* command_tw
 	TWI_MasterWriteWait(twim, address, data, 2);
 }
 
-void command_handler_encoder(const Command_t* com, const Commnad_twi_t* command_twi) {
+void command_handler_encoder(Command_t* const com, Command_twi_t* const command_twi) {
 	TWI_Master_t* twim = command_twi->twim; 
 	TWI_Slave_t*  twis = command_twi->twis; 
 	Encoders_t*   enc  = com->dataref;
@@ -184,17 +194,17 @@ void command_handler_encoder(const Command_t* com, const Commnad_twi_t* command_
 		case ENCODER:	
 			data = MOTORPROTO_INSTR_READ;
 			TWI_MasterWriteReadWait(twim, 0x01, &data, 1, 4);	
-			copy_array_into(enc->data[0], twim->readData, 4);
+			copy_array_into(enc->data[0], twim->readData, 4, 0);
 			TWI_MasterWriteReadWait(twim, 0x02, &data, 1, 4);
-			copy_array_into(enc->data[1], twim->readData, 4);
+			copy_array_into(enc->data[1], twim->readData, 4, 0);
 			TWI_MasterWriteReadWait(twim, 0x03, &data, 1, 4);
-			copy_array_into(enc->data[2], twim->readData, 4);
+			copy_array_into(enc->data[2], twim->readData, 4, 0);
 			enc->ready = 0;
 			break;
 		case ENCODER_GET_DISTANCE_AND_RESET:
 			encoders_add_and_reset(enc);
 			_quadbyte.value = enc->distance;
-			copy_array_into(twis->sendData, _quadbyte.byte, 4);
+			copy_array_into(twis->sendData, _quadbyte.byte, 4, 0);
 		case ENCODER_RESET:
 			data = MOTORPROTO_INSTR_RESET;
 			TWI_MasterWriteWait(twim, 0x01, &data, 1);	
@@ -204,18 +214,18 @@ void command_handler_encoder(const Command_t* com, const Commnad_twi_t* command_
 		case ENCODER_GET_DISTANCE:
 			encoders_add(enc);
 			_quadbyte.value = enc->distance;
-			copy_array_into(twis->sendData, _quadbyte.byte, 4);
+			copy_array_into(twis->sendData, _quadbyte.byte, 4, 0);
 	}
 }
 
-void command_handler_vector(const Command_t* com, const Commnad_twi_t* command_twi) {
+void command_handler_vector(Command_t* const com, Command_twi_t* const command_twi) {
 }
 
 
 
 
 // copy first n bytes from a2 to a1
-void copy_array_into(uint8_t* a1, uint8_t* a2, uint8_t n2, uint8_t from = 0) {
+void copy_array_into(uint8_t* a1, uint8_t* a2, uint8_t n2, uint8_t from) {
 	uint8_t i;
 	for(i = from; i < n2; i++)
 		a1[i] = a2[i];
@@ -231,10 +241,11 @@ void copy_array_into(uint8_t* a1, uint8_t* a2, uint8_t n2, uint8_t from = 0) {
 
 
 
-Command_t    command;
-TWI_Master_t twie_master;
-TWI_Slave_t  twic_slave;
-Encoders_t   encoders;
+TWI_Master_t  twie_master;
+TWI_Slave_t   twic_slave;
+Command_t     command;
+Command_twi_t command_twi = {&twic_slave, &twie_master};
+Encoders_t    encoders;
 
 ISR(TWIE_TWIM_vect) {
 	TWI_MasterInterruptHandler(&twie_master);
@@ -247,12 +258,13 @@ ISR(TWIC_TWIS_vect) {
 void TWIC_slave_process_data() {
 	uint8_t recieved = twic_slave.bytesReceived;
 
-	command.command = twic_slave.recievedData[0];
-	recieved -= 1;
+	command.command = twic_slave.receivedData[0];
 
-	if(recieved > 0) {
-		copy_array_into(command.data, twic_slave.recievedData, recieved, 1);
+	if(recieved > 1) {
+		command.data_count = recieved - 1;
+		copy_array_into(command.data, twic_slave.receivedData, recieved, 1);
 	}
+	command_handler(&command, &command_twi);
 }
 
 void set_32mhz_osc() {
@@ -293,7 +305,7 @@ int main(void) {
 
 
 	PORTD_DIR = 0b00000110;
-PORTD_OUT |= PIN1_bm;
+	PORTD_OUT |= PIN1_bm;
 
 	uint8_t p[2] = {0x05, 0x00};
 
