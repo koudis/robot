@@ -33,6 +33,7 @@ ISR(INT1_vect, ISR_NOBLOCK) {
 
 void pwm_init();
 void pwm_enable();
+void pwm_disable();
 void pwm_set1a(uint8_t);
 void pwm_set1b(uint8_t);
 
@@ -55,6 +56,11 @@ void pwm_init() {
 void pwm_enable() {
 	// select clock source without prescaller
 	TCCR1B |= (1 << CS10) | (0 << CS11) | (0 << CS12);
+}
+
+void pwm_disable() {
+	// disable clock
+	TCCR1B = 0;
 }
 
 void pwm_set1a(uint8_t v) {
