@@ -32,6 +32,7 @@ ISR(INT1_vect, ISR_NOBLOCK) {
 
 
 void pwm_init();
+void pwm_enable();
 void pwm_set1a(uint8_t);
 void pwm_set1b(uint8_t);
 
