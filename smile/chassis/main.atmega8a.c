@@ -109,6 +109,7 @@ int main(void) {
 	// enable TWI
 	TWI_Start_Transceiver();
 
+	uint8_t _cache = 0;
 	while(1) {
 		if(!TWI_Transceiver_Busy()) {
 			if(TWI_statusReg.RxDataInBuf){
@@ -133,10 +134,12 @@ int main(void) {
 						}
 						break;
 					case MOTORPROTO_INSTR_SET_FORWARD:
-						pwm_set1a(message_buff[0] & MOTORPROTO_DATA_GET);
+						_cache = (message_buff[0] & MOTORPROTO_DATA_GET) * (0b11111111 / MOTORPROTO_DATA_GET);
+						pwm_set1a(_cache);
 						break;
 					case MOTORPROTO_INSTR_SET_BACKWARD:
-						pwm_set1b(message_buff[0] & MOTORPROTO_DATA_GET);
+						_cache = (message_buff[0] & MOTORPROTO_DATA_GET) * (0b11111111 / MOTORPROTO_DATA_GET);
+						pwm_set1b(_cache);
 						break;
 					default:
 						break;
