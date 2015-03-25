@@ -5,7 +5,8 @@ import math
 from math import sin, cos
 
 ALPHA    = (math.pi / 6)
-POWER    = 32
+POWER_S  = 80
+POWER    = 100
 ROTATION = 0
 
 
@@ -24,17 +25,81 @@ def get_v2(v2):
 def get_v3(v3):
 	return [v3*sin(ALPHA), -v3*cos(ALPHA)]
 
-ss = [float(sys.argv[1]), float(sys.argv[2])]
-const = s_constants(POWER, ROTATION, ss)
+sign = lambda x: math.copysign(1,x)
 
-v1 = get_v1(POWER * const[0])
-v2 = get_v2(POWER * const[1])
-v3 = get_v3(POWER * const[2])
+def calculate_available(ss, power_s):
+	const = s_constants(POWER, ROTATION, ss)
+	
+	v = [0, 0, 0]
+	v[0] = POWER * const[0]
+	v[1] = POWER * const[1]
+	v[2] = POWER * const[2]
+	
+	#print "v[0] / v[1]", v[0] / v[1]
+	#print "v[1] / v[2]", v[1] / v[2]
+	#print "v[0] / v[3]", v[0] / v[2]
+	
+	# Naskalujeme na maximum
+	v_max = 0
+	for i in range(0, 2):
+		if(v_max < abs(v[i])):
+			v_max = abs(v[i])
+	
+	if(v[0] == 0):
+		v[0] = 0
+	else:
+		v[0] = ( v[0] / v_max ) * POWER
+	
+	if(v[1] == 0):
+		v[1] = 0
+	else:
+		v[1] = ( v[1] / v_max ) * POWER
+	
+	if(v[2] == 0):
+		v[2] = 0
+	else:
+		v[2] = ( v[2] / v_max ) * POWER
+	#print "\nv[0], v[1], v[2]", v
+	
+#	print "\nv[0], v[1], v[2]", v
+#	print "v[0] / v[1]", v[0] / v[1]
+#	print "v[1] / v[2]", v[1] / v[2]
+#	print "v[0] / v[2]", v[0] / v[2]
+#
+#	# vyzkusime posunout o rezervu
+#	L_1 = 1
+#	L_2 = (v[1] / v[0]) * ((v[0] + sign(v[0])*power_s) / (v[1] + sign(v[1])*power_s))
+#	L_3 = (v[2] / v[0]) * ((v[0] + sign(v[0])*power_s) / (v[2] + sign(v[2])*power_s))
+#	
+#	v[0] = (v[0] + sign(v[0])*power_s) * L_1
+#	v[1] = (v[1] + sign(v[1])*power_s) * L_2
+#	v[2] = (v[2] + sign(v[2])*power_s) * L_3
+#
+#
+#	
+#	print "\nv[0], v[1], v[2]", v
+#	print "v[0] / v[1]", v[0] / v[1]
+#	print "v[1] / v[2]", v[1] / v[2]
+#	print "v[0] / v[2]", v[0] / v[2]
+	return v
 
-sum = [ v1[0] + v2[0] + v3[0], v1[1] + v2[1] + v3[1] ]
+def check(ss, power, power_s):
+	v = calculate_available(ss, POWER_S);
+#	if((abs(v[0]) > power_s or v[0] == 0) and (abs(v[1]) > power_s or v[1] == 0) and (abs(v[2]) > power_s or v[2] == 0)):
 
-print "s_x / s_y = ", ss[0] / ss[1]
-print "sum_x / sum_y = ", sum[0] / sum[1]
-print "sum[0:2]", sum[0:2]
-print "consts[0:3]", const[0:3]
-print "v1, v2, v3 ", v1, v2, v3
+def simulate():
+	valid_x = []
+	valid_y = []
+	for x in range(0, 128):
+		for y in range(0, 128):
+			if((abs(v[0]) > POWER_S or v[0] == 0) and (abs(v[1]) > POWER_S or v[1] == 0) and (abs(v[2]) > POWER_S or v[2] == 0)):
+				valid_x.append(x)
+				valid_y.append(y)
+	for i in range(0, len(valid_y) - 1):
+		print str(valid_x[i]) +  "," + str(valid_y[i])
+
+ss = [int(sys.argv[1]), int(sys.argv[2])]
+v = calculate_available(ss, POWER_S);
+print v
+
+
