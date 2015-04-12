@@ -78,7 +78,7 @@ void pwm_set1b(uint8_t v) {
 
 
 void init() {
-	TWI_Slave_Initialise(0b00000100);
+	TWI_Slave_Initialise(0x11 << 1);
 
 	// wait for stab..
 	_delay_ms(1000);
@@ -103,11 +103,12 @@ int main(void) {
 	init();
 	_delay_ms(100);
 
-	DDRD  |= (1 << 7);
-	PORTD |= (1 << 7);
+	DDRD  |= (1 << PIN7);
+	PORTD |= (1 << PIN7);
 
 	// enable TWI
 	TWI_Start_Transceiver();
+	pwm_enable();
 
 	uint8_t _cache = 0;
 	while(1) {
@@ -134,26 +135,24 @@ int main(void) {
 						}
 						break;
 					case MOTORPROTO_INSTR_SET_FORWARD:
-						_cache = (message_buff[0] & MOTORPROTO_DATA_GET) * (0b11111111 / MOTORPROTO_DATA_GET);
+						TWI_Get_Data_From_Transceiver(message_buff, 2);
+						_cache = message_buff[1];
 						pwm_set1a(_cache);
+						pwm_set1b(0);
+						message_buff[0] = 0;
 						break;
 					case MOTORPROTO_INSTR_SET_BACKWARD:
-						_cache = (message_buff[0] & MOTORPROTO_DATA_GET) * (0b11111111 / MOTORPROTO_DATA_GET);
+						TWI_Get_Data_From_Transceiver(message_buff, 2);
+						_cache = message_buff[1];
+						pwm_set1a(0);
 						pwm_set1b(_cache);
+						message_buff[0] = 0;
 						break;
 					default:
 						break;
 				}
 			}
 		}
-		/*
-		if(enc.direction == Encoder_DIRECTION_BACKWARD) {
-			PORTD |= (1 << 7);
-		}
-		if(enc.direction == Encoder_DIRECTION_FORWARD) {
-			PORTD = 0b00000000;
-		}
-		*/
 	}
 
 	return 0;
