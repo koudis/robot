@@ -3,11 +3,11 @@ TARGET_MCU =atmega8a
 CC         ='/media/solid/avr/bin/avr-gcc'
 AVROBJCOPY ='/media/solid/avr/bin/avr-objcopy'
 AVRDUDE    ='/media/solid/avr/bin/avrdude'
-OPTIMIZE   =-O3 -fshort-enums -funsigned-char -fdata-sections
+OPTIMIZE   =-O2 -fshort-enums -funsigned-char -fdata-sections
 
 DEFS       =
 
-override CFLAGS  = -g $(OPTIMIZE) $(DEFS) --std=gnu99
+override CFLAGS  = -g $(OPTIMIZE) $(DEFS) --std=gnu11
 override LDFLAGS =
 
 include conf/main.mk
