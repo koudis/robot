@@ -19,13 +19,11 @@ uint8_t TWI_MasterWriteReadWait(TWI_Master_t *twi, uint8_t address, uint8_t * wr
 void copy_array_into(uint8_t* a1,uint8_t* a2, uint8_t n2, uint8_t from);
 
 uint8_t TWI_MasterWriteWait(TWI_Master_t *twi, uint8_t address, uint8_t * writeData, uint8_t bytesToWrite) {
-	TWI_MasterWrite(twi, address, writeData, bytesToWrite);
-	while(TWI_MasterState(twi) != TWI_MASTER_BUSSTATE_IDLE_gc);
+	while(!TWI_MasterWrite(twi, address, writeData, bytesToWrite));
 }
 
 uint8_t TWI_MasterWriteReadWait(TWI_Master_t *twi, uint8_t address, uint8_t * writeData, uint8_t bytesToWrite, uint8_t bytesToRead) {
-	TWI_MasterWriteRead(twi, address, writeData, bytesToWrite, bytesToRead);
-	while(TWI_MasterState(twi) != TWI_MASTER_BUSSTATE_IDLE_gc);
+	while(!TWI_MasterWriteRead(twi, address, writeData, bytesToWrite, bytesToRead));
 }
 
 void TWI_SlaveWrite(TWI_Slave_t* twis, uint8_t* data, uint8_t bytes_to_send) {
@@ -41,14 +39,15 @@ void TWI_SlaveWrite(TWI_Slave_t* twis, uint8_t* data, uint8_t bytes_to_send) {
 #define COMMAND_ATTR (0xff >> COMMAND_HEAD_BITS_COUNT)
 
 #define COMMAND_HEAD_DO_NOTHING (0b000 << COMMAND_ATTR_BITS_COUNT)
+#define COMMAND_HEAD_SETTINGS   (0b011 << COMMAND_ATTR_BITS_COUNT)
 #define COMMAND_HEAD_MOTOR      (0b100 << COMMAND_ATTR_BITS_COUNT)
 #define COMMAND_HEAD_ENCODER    (0b010 << COMMAND_ATTR_BITS_COUNT)
 #define COMMAND_HEAD_VECTOR     (0b001 << COMMAND_ATTR_BITS_COUNT)
 
 #define MOTOR_NUMBER_MASK 0b01111
 #define MOTOR_0 0b00000
-#define MOTOR_1 0b00010
-#define MOTOR_2 0b00001
+#define MOTOR_1 0b00001
+#define MOTOR_2 0b00010
 
 #define MOTOR_DIRECTION_MASK 0b10000
 #define MOTOR_FORWARD  0b10000
@@ -65,6 +64,12 @@ typedef union {
 	int8_t byte[4];
 } Quadbyte_float_t;
 Quadbyte_float_t _quadbyte;
+
+typedef struct Settings {
+	uint8_t power;
+	uint8_t rotation;
+} Settings_t;
+
 
 
 
@@ -95,9 +100,10 @@ void encoders_add(Encoders_t* enc) {
 }
 
 
-
 typedef enum Commands {
 	no_command     = COMMAND_HEAD_DO_NOTHING,
+	// settings
+	settings       = (COMMAND_HEAD_DO_NOTHING),
 	// three bytes - [x, y, s] (s = rotation)
 	set_vector     = COMMAND_HEAD_VECTOR,
 	// one byte in {0, 1, ..., 32}
@@ -141,6 +147,7 @@ typedef struct Command_twi {
 } Command_twi_t;
 
 void command_init(Command_t* const  com, Command_twi_t* const command_twi);
+void command_handler_settings(Command_t* const com, Command_twi_t* const command_twi);
 void command_stack_add(CommandStack_t* const  com_stack, Command_t* const com);
 void command_stack_pnext(CommandStack_t* const  com, Command_twi_t* const command_twi);
 void command_handler(Command_t* const com, Command_twi_t* const commnad_twi);
@@ -158,43 +165,33 @@ void command_init(Command_t* const com, Command_twi_t* const command_twi) {
 }
 
 void command_stack_add(CommandStack_t* const  com_stack, Command_t * const com) {
-	uint8_t pos               = com_stack->pos;
-	Command_t* const this_com = &com_stack->command[pos];
-	switch(this_com->state) {
-		case WAITING:
-			pos = (pos + 1) % 8;
-			break;
-		default:
-			pos = 0;
-	}
-
-	com_stack->command[pos] = (*com);
-	com_stack->pos          = pos;
-	(&com_stack->command[pos])->state = WAITING;
+	uint8_t pos = com_stack->pos;
+	com->state = WAITING;
+	com_stack->command[pos] = *com;
+	com_stack->pos = (pos + 1) % 8; 
 }
 
 void command_stack_pnext(CommandStack_t* const  com_stack, Command_twi_t* const command_twi) {
-	uint8_t pos_pnext          = com_stack->pos_pnext;
-	Command_t* const pnext_com = &com_stack->command[pos_pnext];
-	switch(pnext_com->state) {
-		case WAITING:
-			cli();
-			com_stack->pos_pnext = (pos_pnext + 1) % 8;
-			sei();
-			command_handler(pnext_com, command_twi);
-			pnext_com->state = PROCESSED;
-			break;
-		default:
-			cli();
-			com_stack->pos_pnext = 0;
-			sei();
+	uint8_t pos_pnext    = com_stack->pos_pnext;
+	Command_t* const com = &com_stack->command[pos_pnext];
+
+	if(com->state != PROCESSED) {
+		command_handler(&com_stack->command[pos_pnext], command_twi);
+		com->state = PROCESSED;
 	}
+	if(pos_pnext != com_stack->pos) {
+		com_stack->pos_pnext = (pos_pnext + 1 ) % 8;
+	}
+
 }
 
 void command_handler(Command_t* const com, Command_twi_t* const command_twi) {
 	uint8_t command = com->command;
 	switch(command & COMMAND_HEAD) {
 		case COMMAND_HEAD_DO_NOTHING:
+			break;
+		case COMMAND_HEAD_SETTINGS:
+			command_handler_settings(com, command_twi);
 			break;
 		case COMMAND_HEAD_ENCODER:
 			command_handler_encoder(com, command_twi);
@@ -210,11 +207,14 @@ void command_handler(Command_t* const com, Command_twi_t* const command_twi) {
 	}
 }
 
+void command_handler_settings(Command_t* const com, Command_twi_t* const command_twi) {
+}
+
 #define MOTOR_TWI_ADDRESS
 void command_handler_motor(Command_t* const com, Command_twi_t* const command_twi) {
 	TWI_Master_t* twim = command_twi->twim; 
 	uint8_t attr       = (com->command & COMMAND_ATTR);
-	uint8_t data       = 0;
+	uint8_t data[2]    = { 0 };
 	uint8_t address    = 0;
 
 	switch(attr & MOTOR_NUMBER_MASK) {
@@ -222,22 +222,24 @@ void command_handler_motor(Command_t* const com, Command_twi_t* const command_tw
 			address = 0x11;
 			break;
 		case MOTOR_1:
-			address = 0x12;
+			address = 0x13;
 			break;
 		case MOTOR_2:
-			address = 0x13;
+			address = 0x12;
 			break;
 	}
 	switch(attr & MOTOR_DIRECTION_MASK) {
 		case MOTOR_FORWARD:
-			data = MOTORPROTO_INSTR_SET_FORWARD | com->data[0];
+			data[0] = MOTORPROTO_INSTR_SET_FORWARD;
+			data[1] = com->data[0];
 			break;
 		case MOTOR_BACKWARD:
-			data = MOTORPROTO_INSTR_SET_BACKWARD | com->data[0];
+			data[0] = MOTORPROTO_INSTR_SET_BACKWARD;
+			data[1] = com->data[0];
 			break;
 	}
 
-	TWI_MasterWriteWait(twim, address, &data, 1);
+	TWI_MasterWriteWait(twim, address, data, 2);
 }
 
 void command_handler_encoder(Command_t* const com, Command_twi_t* const command_twi) {
@@ -291,20 +293,17 @@ typedef union {
 } Doublebyte_int_t;
 Doublebyte_int_t _doublebyte;
 
-#define SIN_ALPHA 0.5
-#define COS_ALPHA 0.866
-#define POWER 32
+#define POWER   80
+#define POWER_S 80
 void command_handler_vector(Command_t* const com, Command_twi_t* const command_twi) {
-	// buno 128 ==> zero
-	int8_t v_x = 11;
-	int8_t v_y = 11;
-	int8_t s   = 11;
+	int8_t v_x = (int8_t) com->data[0];
+	int8_t v_y = (int8_t) com->data[1];
+	int8_t s   = (int8_t) com->data[2];
 	int16_t v[3];
 
-	v[0] = POWER * ((SIN_ALPHA / (POWER * (1 + SIN_ALPHA))) * (s - POWER * v_x) - v_x);
-	v[1] = POWER * (((float)v_y / (2 * COS_ALPHA)) + (s - POWER * v_x) / (2 * POWER * (1 + SIN_ALPHA)));
-	v[2] = (-1) * POWER * (((float)v_y / (2 * COS_ALPHA)) + (float)(s - POWER * v_x) / (2 * POWER * (1 + SIN_ALPHA)));
-
+	v[0] = (0.33333) * (s + v_x) - v_x;
+	v[1] = (0.5774 * v_y + (0.33333) * (s + v_x));
+	v[2] = (-0.5774 * v_y + (0.33333) * (s + v_x));
 
 	uint16_t v_max = 0;
 	uint8_t i;
@@ -313,23 +312,20 @@ void command_handler_vector(Command_t* const com, Command_twi_t* const command_t
 			v_max = abs(v[i]);
 	}
 
-	v[0] = ((float)v[0] / v_max) * POWER;
-	v[1] = ((float)v[1] / v_max) * POWER;
-	v[2] = ((float)v[2] / v_max) * POWER;
-	v[0] = 28;
-	v[1] = 28;
-	v[2] = 28;
-
-	command.command = set_motor_2b;
-	command.data[0] = v[1];
-	command_stack_add(&commands, &command);
+	if(v[0] != 0)
+		v[0] = ((float)v[0] / v_max) * POWER + (v[0] / abs(v[0])) * POWER_S;
+	if(v[1] != 0)
+		v[1] = ((float)v[1] / v_max) * POWER + (v[1] / abs(v[1])) * POWER_S;
+	if(v[2] != 0)
+		v[2] = ((float)v[2] / v_max) * POWER + (v[2] / abs(v[2])) * POWER_S;
 
 	if(v[0] > 0) {
 		command.command = set_motor_0f;
+		command.data[0] = v[0];
 	} else {
 		command.command = set_motor_0b;
+		command.data[0] = (-1)*v[0];
 	}
-	command.data[0] = v[0];
 	command_stack_add(&commands, &command);
 
 	if(v[1] > 0) {
@@ -371,7 +367,7 @@ void copy_array_into(uint8_t* a1, uint8_t* a2, uint8_t n2, uint8_t from) {
 
 
 
-ISR(TWIE_TWIM_vect) {
+ISR(TWIE_TWIM_vect, ISR_NOBLOCK) {
 	TWI_MasterInterruptHandler(&twie_master);
 }
 
@@ -391,7 +387,7 @@ void TWIC_slave_process_data() {
 		twi_bytes_for_receive = twic_slave.receivedData[1];
 		return;
 	} else {
-		twi_command.data[command.data_count] = twic_slave.receivedData[received];
+		twi_command.data[twi_command.data_count] = twic_slave.receivedData[received];
 		twi_command.data_count += 1;
 	}	
 
@@ -410,7 +406,7 @@ void set_32mhz_osc() {
 }
 
 void init() {
-	cli();
+	cli(); // bottloader enable sei
 	set_32mhz_osc();
 	_delay_ms(100);
 
@@ -476,12 +472,6 @@ int main(void) {
 
 	TWI_MasterWrite(&twie_master, 0b001000000, p6, 2);
 	while (twie_master.status != TWIM_STATUS_READY);*/
-
-	/*uint8_t data2 = 0xa0;
-	_data = 0xaf;
-	command.command = set_motor_0f;
-	command.data[0] = 0;
-	command.data_count = 1;*/
 	while(1) {
 		command_stack_pnext(&commands, &command_twi);
 	}
