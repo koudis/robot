@@ -39,6 +39,13 @@ define init_env
 ACTDIR := $$(patsubst %/,%,$$(dir $$(lastword $$(MAKEFILE_LIST))))
 endef
 
+define init
+$(eval $(call init_s,$(1),$(2)))
+endef
+define init_s
+$(if $(wildcard conf/env.mk),include conf/env.mk,$(error Please, create env.mk file))
+endef
+
 # init main environment
 define include_lib
 $(eval $(call include_lib_s,$(1)))
