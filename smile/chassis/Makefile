@@ -1,8 +1,5 @@
 
 TARGET_MCU =atmega8a
-CC         ='/media/solid/avr/bin/avr-gcc'
-AVROBJCOPY ='/media/solid/avr/bin/avr-objcopy'
-AVRDUDE    ='/media/solid/avr/bin/avrdude'
 OPTIMIZE   =-O2 -fshort-enums -funsigned-char -fdata-sections
 
 DEFS       =
@@ -21,7 +18,7 @@ all: $(TARGET_FILE_NAME)
 
 
 
-#$(call init_env_constant,atmega8a)
+$(call init)
 $(call init_mmcu,$(TARGET_MCU))
 $(call include_conf,$(TARGET_MCU))
 $(call include_lib,lib)
