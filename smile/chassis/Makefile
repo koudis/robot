@@ -48,4 +48,4 @@ fuses:
 clean:
 	rm -f *.hex *.elf *.o $(M_CLEAN_VAR)
 
-.PHONY=all flash clean
+.PHONY=all flash clean fuses
