@@ -1,0 +1,16 @@
+Run eagle from shell and create ps file with board or schematics :
+
+user@host pwd$ eagle -X -d PS -o board.ps board.brd Layers
+
+Layers - here must be specified all layers which we wont to draw.
+    - Example : Top Bottom Pads Vias ...
+    
+OPTIONS :
+
+    -X      : runs eagle with parameters and exits. without this will be gui started
+    -d PS   : specifies output plotting device, in this case is output moved to PS file
+    -o xx   : xx is namo of output file
+    -r      : rotate output (left side is top side, ..)
+    -sX     : size of drawing, X is integer.
+    -xN     : moves drawing on x axis, N is float
+    -yN     : moves drawing on y axis, N is float
