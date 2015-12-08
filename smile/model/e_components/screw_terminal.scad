@@ -1,3 +1,6 @@
+
+module screw_terminal(size,color){
+
 module __screw_terminal_body(size, color){
 
 	color(color)cube([4,4,2]);
@@ -34,7 +37,6 @@ module __screws(){
 	}
 }
 
-module screw_terminal(size,color){
 
 	difference(){
 	__screw_terminal_body(size,color);
